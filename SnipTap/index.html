@@ -1,0 +1,685 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SnipTap - Quick Text Snippets and AI Rewrite</title>
+  <meta name="description" content="SnipTap helps you save, organize, rewrite, and reuse text snippets, templates, and clipboard history faster." />
+  <link rel="icon" type="image/webp" href="sniptap-icon.webp" />
+  <style>
+    :root {
+      --bg: #111118;
+      --panel: #1b1b24;
+      --panel-soft: #232331;
+      --text: #f3efff;
+      --muted: #c9c2dd;
+      --accent: #c7adff;
+      --accent-strong: #7252d7;
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(114, 82, 215, 0.28), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(199, 173, 255, 0.18), transparent 30rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(18px);
+      background: rgba(17, 17, 24, 0.72);
+      border-bottom: 1px solid var(--border);
+      z-index: 5;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.35rem;
+    }
+
+    .brand:hover {
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 12px 32px var(--shadow);
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 86px 0 56px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      max-width: 720px;
+    }
+
+    .lead {
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      max-width: 660px;
+    }
+
+    .lead-note {
+      margin-top: 12px;
+    }
+
+    .lead-note strong {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 750;
+      border: 1px solid var(--border);
+      min-height: 48px;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #211437;
+      border-color: transparent;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+    }
+
+    .phone-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--border);
+      border-radius: 36px;
+      padding: 18px;
+      box-shadow: 0 28px 80px var(--shadow);
+    }
+
+    .app-preview {
+      background: #101016;
+      border-radius: 28px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 560px;
+    }
+
+    .app-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      font-size: 1.35rem;
+      font-weight: 750;
+    }
+
+    .search {
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      color: var(--muted);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 0.9rem;
+    }
+
+    .chip.active {
+      background: #e7ebf3;
+      color: #252433;
+    }
+
+    .snippet {
+      padding: 18px;
+      border-radius: 24px;
+      background: #1c1c26;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .snippet-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .snippet-title {
+      font-weight: 800;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      color: #261744;
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-weight: 800;
+    }
+
+    .snippet p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    section {
+      padding: 58px 0;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin: 0 0 14px;
+    }
+
+    .section-lead {
+      color: var(--muted);
+      margin: 0 0 28px;
+      max-width: 780px;
+      font-size: 1.08rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(35, 35, 49, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 24px;
+      min-height: 210px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(199, 173, 255, 0.14);
+      color: var(--accent);
+      font-size: 1.45rem;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      background: rgba(35, 35, 49, 0.65);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #211437;
+      background: var(--accent);
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 1.08rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .price-card {
+      border-radius: 30px;
+      padding: 28px;
+      background: rgba(35, 35, 49, 0.72);
+      border: 1px solid var(--border);
+    }
+
+    .price-card.pro {
+      background: linear-gradient(180deg, rgba(114, 82, 215, 0.34), rgba(35, 35, 49, 0.75));
+      border-color: rgba(199, 173, 255, 0.38);
+    }
+
+    .price {
+      font-size: 2.5rem;
+      line-height: 1;
+      font-weight: 900;
+      margin: 16px 0;
+      letter-spacing: -0.06em;
+    }
+
+    ul {
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    .pricing-note {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin: 16px 0 0;
+      max-width: none;
+      white-space: nowrap;
+    }
+
+    footer {
+      padding: 42px 0;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 58px;
+      }
+
+      .grid,
+      .pricing {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .app-preview {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell nav">
+      <a class="brand" href="index.html" aria-label="SnipTap home">
+        <img class="brand-icon" src="sniptap-icon.webp" alt="SnipTap icon" />
+        <span>SnipTap</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#guide">Guide</a>
+        <a href="#pricing">Pricing</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="mailto:support@sniptap.app">Support</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div>
+        <div class="eyebrow">Quick text snippets</div>
+        <h1>Save repeated messages. Reuse them instantly.</h1>
+        <p class="lead">
+          SnipTap helps you organize everyday replies, fill templates, save useful clipboard text,
+          and copy your most-used messages faster.
+        </p>
+        <p class="lead lead-note">
+          <strong>New:</strong> AI Rewrite can polish saved snippets when you need a clearer tone.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#guide">See how it works</a>
+          <a class="button secondary" href="mailto:support@sniptap.app">Contact support</a>
+        </div>
+      </div>
+
+      <div class="phone-card" aria-label="SnipTap app preview">
+        <div class="app-preview">
+          <div class="app-top">
+            <span>SnipTap</span>
+            <span aria-label="Menu">&#8942;</span>
+          </div>
+          <div class="search">Search snippets</div>
+          <div class="chips">
+            <span class="chip active">All</span>
+            <span class="chip">General</span>
+            <span class="chip">Work</span>
+            <span class="chip">Personal</span>
+            <span class="chip">Finance</span>
+          </div>
+
+          <div class="snippet">
+            <div class="snippet-head">
+              <span class="snippet-title">Client follow-up</span>
+              <span class="label">Work</span>
+            </div>
+            <p>Hi, just following up on my previous message. Let me know if you had a chance to review it.</p>
+          </div>
+
+          <div class="snippet">
+            <div class="snippet-head">
+              <span class="snippet-title">Invoice sent</span>
+              <span class="label">Finance</span>
+            </div>
+            <p>Hi [name], I've sent the invoice for [project]. The total amount is [amount].</p>
+          </div>
+
+          <div class="snippet">
+            <div class="snippet-head">
+              <span class="snippet-title">Running late</span>
+              <span class="label">Personal</span>
+            </div>
+            <p>Hey, I'm running about 10 minutes late. Sorry for the delay.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="shell">
+      <h2 class="section-title">Built for practical text reuse</h2>
+      <p class="section-lead">
+        SnipTap is focused on simple, everyday workflows: save text once, find it fast, copy it when needed.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <div class="icon">&#10022;</div>
+          <h3>Snippets</h3>
+          <p>Save messages, replies, notes, and small text blocks you use often.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">[]</div>
+          <h3>Templates</h3>
+          <p>Use placeholders like [name], [date], or [amount] and fill them before copying.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">&#10697;</div>
+          <h3>Clipboard history</h3>
+          <p>Keep useful copied text and turn it into reusable snippets when needed.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">&#9679;</div>
+          <h3>Floating bubble</h3>
+          <p>Quickly open SnipTap or create from clipboard while using other apps.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">&#8597;</div>
+          <h3>Import / Export</h3>
+          <p>Export your data for backup. Pro users can import backups when needed.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">?</div>
+          <h3>Feedback</h3>
+          <p>Report issues directly from the app with useful device and app diagnostics.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="guide" class="shell">
+      <h2 class="section-title">How to use SnipTap</h2>
+      <p class="section-lead">
+        A quick screen-to-screen guide for the main workflows.
+      </p>
+
+      <div class="steps">
+        <article class="step">
+          <div>
+            <h3>Create a snippet</h3>
+            <p>Tap the plus button, enter a title, choose a category, write the content, and save.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Copy a saved snippet</h3>
+            <p>Open the Home screen and tap a snippet card to copy its content instantly.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Use a template</h3>
+            <p>Create a snippet with placeholders like [name] or [date]. SnipTap will open a fill screen before copying.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Save from clipboard</h3>
+            <p>Open Clipboard, preview copied text, then use Save to turn it into a snippet.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Rewrite with AI</h3>
+            <p>Open a saved snippet and use AI Rewrite to polish the text before copying or saving a new version.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Use the floating bubble</h3>
+            <p>Enable the bubble to quickly open SnipTap, open Clipboard, or create a snippet from copied text.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <div>
+            <h3>Back up your data</h3>
+            <p>Use Import / Export to export your snippets. Import is available with SnipTap Pro.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing" class="shell">
+      <h2 class="section-title">Free, Pro, and AI+</h2>
+      <p class="section-lead">
+        Start free. Upgrade once for more room, or add AI+ credits when you need more rewrites.
+      </p>
+
+      <div class="pricing">
+        <article class="price-card">
+          <h3>SnipTap Free</h3>
+          <div class="price">Free</div>
+          <ul>
+            <li>Up to 15 snippets</li>
+            <li>Up to 3 template snippets</li>
+            <li>Up to 2 custom categories</li>
+            <li>Up to 5 clipboard history items</li>
+            <li>3 lifetime AI rewrites</li>
+            <li>Export available</li>
+          </ul>
+        </article>
+
+        <article class="price-card pro">
+          <h3>SnipTap Pro</h3>
+          <div class="price">$4.99</div>
+          <ul>
+            <li>One-time purchase</li>
+            <li>Unlimited snippets</li>
+            <li>Unlimited templates</li>
+            <li>Unlimited custom categories</li>
+            <li>Expanded clipboard history</li>
+            <li>Up to 20 AI rewrites per month*</li>
+            <li>Import backups</li>
+          </ul>
+        </article>
+
+        <article class="price-card">
+          <h3>SnipTap AI+</h3>
+          <div class="price">$0.99</div>
+          <ul>
+            <li>Up to 100 extra AI rewrite credits*</li>
+            <li>Repeatable credit pack</li>
+            <li>Used after free or Pro allowance</li>
+          </ul>
+        </article>
+      </div>
+      <p class="pricing-note">
+        * AI rewrite allowances may vary over time based on provider costs and service availability, so SnipTap can keep the feature reliable and sustainable.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <span>&copy; <span id="year"></span> SnipTap</span>
+      <span>
+        <a href="privacy.html">Privacy Policy</a>
+        |
+        <a href="mailto:support@sniptap.app">support@sniptap.app</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
