@@ -43,25 +43,21 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(320px, 0.86fr);
-  gap: 42px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  gap: 64px;
   align-items: center;
-  padding: 64px 0 42px;
+  padding: 68px 0 46px;
 }
 
 .hero-copy {
-  max-width: 760px;
+  max-width: 720px;
+  min-width: 0;
 }
 
-.app-icon {
-  width: 96px;
-  height: 96px;
-  margin-bottom: 24px;
-  border-radius: 22px;
-  box-shadow: 0 22px 60px rgba(119, 215, 255, 0.2);
-}
-
-.hero-art {
+.hero-card {
+  width: 100%;
+  max-width: 460px;
+  justify-self: end;
   border: 1px solid rgba(119, 215, 255, 0.22);
   border-radius: 8px;
   overflow: hidden;
@@ -69,7 +65,7 @@ main {
   box-shadow: 0 24px 90px rgba(0, 0, 0, 0.34);
 }
 
-.hero-art img {
+.hero-card img {
   width: 100%;
   aspect-ratio: 1024 / 500;
   object-fit: cover;
@@ -91,7 +87,7 @@ h2 {
 
 h1 {
   margin: 0;
-  font-size: clamp(3rem, 7.4vw, 6.4rem);
+  font-size: clamp(3rem, 6.2vw, 5.7rem);
   letter-spacing: 0;
 }
 
@@ -313,11 +309,13 @@ footer a {
   }
 
   .hero {
+    gap: 32px;
     padding-top: 44px;
   }
 
-  .hero-art {
+  .hero-card {
     max-width: 680px;
+    justify-self: start;
   }
 
   .content-grid,
@@ -337,6 +335,7 @@ footer a {
   }
 
   .hero {
+    gap: 24px;
     padding-top: 34px;
     padding-bottom: 30px;
   }
@@ -350,3 +349,4 @@ footer a {
     flex-direction: column;
   }
 }
+
