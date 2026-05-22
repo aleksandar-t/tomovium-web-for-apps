@@ -139,6 +139,7 @@ h2 {
 article,
 .plain-section,
 .policy section,
+.pricing-section,
 .split-section,
 .showcase {
   border: 1px solid var(--line);
@@ -158,11 +159,68 @@ article h2 {
 article p,
 .plain-section p,
 .policy p,
+.pricing-section p,
 .split-section p,
 .showcase p,
 .steps span {
   margin: 0;
   color: var(--muted);
+}
+
+.pricing-section {
+  padding: 30px;
+  margin-bottom: 28px;
+}
+
+.section-heading {
+  max-width: 820px;
+}
+
+.section-heading h2 {
+  max-width: 760px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.price-card {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-height: 250px;
+  padding: 22px;
+  background: rgba(11, 15, 23, 0.42);
+}
+
+.price-card.featured {
+  border-color: rgba(255, 195, 90, 0.46);
+  background: linear-gradient(180deg, rgba(255, 195, 90, 0.12), rgba(11, 15, 23, 0.42));
+}
+
+.price-label {
+  color: var(--sun);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.price-card h3 {
+  margin: 8px 0 0;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.price {
+  margin-top: 12px !important;
+  color: var(--text) !important;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 0.95;
 }
 
 .split-section {
@@ -319,6 +377,7 @@ footer a {
   }
 
   .content-grid,
+  .pricing-grid,
   .screenshots {
     grid-template-columns: 1fr;
   }
