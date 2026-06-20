@@ -43,7 +43,7 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 560px);
   gap: 64px;
   align-items: center;
   padding: 68px 0 46px;
@@ -56,7 +56,7 @@ main {
 
 .hero-card {
   width: 100%;
-  max-width: 460px;
+  max-width: 560px;
   justify-self: end;
   border: 1px solid rgba(119, 215, 255, 0.22);
   border-radius: 8px;
@@ -67,7 +67,7 @@ main {
 
 .hero-card img {
   width: 100%;
-  aspect-ratio: 1024 / 500;
+  aspect-ratio: 1733 / 907;
   object-fit: cover;
 }
 
@@ -141,7 +141,8 @@ article,
 .policy section,
 .pricing-section,
 .split-section,
-.showcase {
+.showcase,
+.faq-section {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(20, 26, 37, 0.86);
@@ -263,6 +264,29 @@ article p,
   margin-bottom: 28px;
 }
 
+.faq-section {
+  display: grid;
+  gap: 22px;
+  padding: 30px;
+  margin-bottom: 28px;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.faq-grid article {
+  background: rgba(11, 15, 23, 0.42);
+}
+
+.faq-grid h3 {
+  margin: 0 0 8px;
+  font-size: 1.16rem;
+  line-height: 1.2;
+}
+
 .showcase-copy {
   max-width: 760px;
 }
@@ -279,13 +303,18 @@ figure {
 
 figure img {
   width: 100%;
-  max-height: 640px;
+  max-height: 760px;
   aspect-ratio: 9 / 16;
   object-fit: cover;
   object-position: top;
   border: 1px solid rgba(119, 215, 255, 0.18);
   border-radius: 8px;
   background: var(--panel-strong);
+}
+
+.screenshots figure:nth-child(6) img {
+  object-fit: contain;
+  background: #07111c;
 }
 
 figcaption {
@@ -374,12 +403,14 @@ footer a {
   }
 
   .hero-card {
-    max-width: 680px;
-    justify-self: start;
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
   }
 
   .content-grid,
-  .pricing-grid {
+  .pricing-grid,
+  .faq-grid {
     grid-template-columns: 1fr;
   }
 
@@ -400,6 +431,8 @@ footer a {
   .pricing-grid,
   .split-section,
   .showcase,
+  .faq-section,
+  .faq-grid,
   .screenshots,
   article,
   .plain-section,
@@ -416,7 +449,8 @@ footer a {
 
   main,
   footer {
-    width: min(100% - 28px, 1180px);
+    width: calc(100% - 40px);
+    max-width: 1180px;
   }
 
   .hero {
