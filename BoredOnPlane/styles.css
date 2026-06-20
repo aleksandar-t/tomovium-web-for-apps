@@ -279,8 +279,10 @@ figure {
 
 figure img {
   width: 100%;
+  max-height: 640px;
   aspect-ratio: 9 / 16;
   object-fit: cover;
+  object-position: top;
   border: 1px solid rgba(119, 215, 255, 0.18);
   border-radius: 8px;
   background: var(--panel-strong);
@@ -377,17 +379,41 @@ footer a {
   }
 
   .content-grid,
-  .pricing-grid,
-  .screenshots {
+  .pricing-grid {
     grid-template-columns: 1fr;
   }
 
-  figure img {
-    aspect-ratio: 4 / 3;
+  .screenshots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 760px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .hero,
+  .hero-copy,
+  .hero-card,
+  .content-grid,
+  .pricing-grid,
+  .split-section,
+  .showcase,
+  .screenshots,
+  article,
+  .plain-section,
+  .pricing-section,
+  .price-card,
+  .steps li,
+  figure {
+    min-width: 0;
+  }
+
+  .screenshots {
+    grid-template-columns: 1fr;
+  }
+
   main,
   footer {
     width: min(100% - 28px, 1180px);
@@ -399,13 +425,27 @@ footer a {
     padding-bottom: 30px;
   }
 
+  .hero-card {
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
   .split-section,
   .showcase {
     padding: 22px;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  a,
+  figcaption {
+    overflow-wrap: anywhere;
   }
 
   footer {
     flex-direction: column;
   }
 }
-
